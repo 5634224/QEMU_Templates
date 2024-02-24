@@ -1,0 +1,3 @@
+I recommend you to install Windows in a VM with VirtIO VGA QEMU device, and then install VirtIO drivers into Windows guest from here:
+https://www.linux-kvm.org/page/WindowsGuestDrivers
+Then, you can change to QXL, if you want.

@@ -1,0 +1,26 @@
+# QEMU guest agent
+sudo apt install qemu-guest-agent xserver-xorg-video-qxl
+
+# Spice host & guest integration
+sudo apt install spice-vdagent spice-webdavd
+sudo systemctl start spice-vdagent.service
+sudo systemctl enable spice-vdagent.service
+
+# TODO: Shared folders between host & guest
+For now, until I figure out the safe way to share folders between host and guest, 
+I recommend installing a SAMBA server in the Linux host (if it's Windows, it isn't necessary), 
+and connecting to the SAMBA server (Windows or Linux, it doesn't matter) by logging in via the address. 
+Since Linux, type smb://10.0.2.2. Since Windows, type \\10.0.2.2
+
+If you need to install SAMBA Server in a Linux host, then you'll want to configure shared folders:
+sudo nano /etc/samba/smb.conf
+
+and then, type the following at the end of the file:
+
+[Datos]
+comment = Samba en Debian
+path = /media/santiago/DATOS/
+read-only = no
+browsable = yes
+writeable = yes
+#guest ok = yes

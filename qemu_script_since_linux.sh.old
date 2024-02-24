@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# Ruta al firmware UEFI/BIOS
+UEFI_FILE="/usr/share/OVMF/OVMF_CODE.fd"
+
+# Ruta a la imagen de disco
+DISK_FILE="win11.qcow2"
+ISO_SO="/media/santiago/DATOS/Sistemas operativos/deepin-desktop-community-20.9-amd64.iso"
+ISO_VIRTIO="/media/santiago/DATOS/Descargas/Descargas desde Linux/KVM Qemu/Drivers VirtIO/virtio-win-0.1.240.iso"
+
+# Ruta a la carpeta compartida
+SHARED_FOLDER="/media/santiago/DATOS/"
+
+# Crear un disco VirtIO de 20 GB si no existe
+if [ ! -f $DISK_FILE ]; then
+  qemu-img create -f qcow2 $DISK_FILE 20G
+fi
+
+# --------------------Spice con VirtIO 3D acceleration (no se disfruta) ---------------------
+# Iniciar la máquina virtual
+#  -device virtio-vga,virgl=on \
+#  -device virtio-gpu \
+#  -fsdev local,id=fsdev0,path=$SHARED_FOLDER,security_model=mapped \
+#  -device virtio-9p-pci,id=fs0,fsdev=fsdev0,mount_tag=hostshare \
+
+# qemu-system-x86_64 \
+#   -enable-kvm \
+#   -m 4096 \
+#   -cpu host \
+#   -smp 4 \
+#   -machine type=q35 \
+#   -bios "$UEFI_FILE" \
+#   -drive file="$DISK_FILE",if=virtio \
+#   -drive file="$ISO_VIRTIO",media=cdrom \
+#   -boot order=c \
+#   -device intel-hda -device hda-duplex \
+#   -vga virtio \
+#   -spice disable-ticketing=on,gl=on \
+#   -device virtio-serial-pci \
+#   -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 \
+#   -chardev spicevmc,id=spicechannel0,name=vdagent \
+
+# --------------------Spice con QXL (equilibrio entre rendimiento gráfico y utilidades entre host y virtual machine) ---------------------
+# -drive file="$ISO_SO",media=cdrom \
+# -drive file="$ISO_VIRTIO",media=cdrom \
+
+# -display none \ -> va más lento
+# -spice port=5930,disable-ticketing=on,agent-mouse=on \
+# Iniciar el cliente: remote-viewer spice://localhost:5930
+
+# -fsdev local,id=fsdev0,path=$SHARED_FOLDER,security_model=mapped \
+# -device virtio-9p-pci,id=fs0,fsdev=fsdev0,mount_tag=hostshare \
+
+qemu-system-x86_64 \
+  -enable-kvm \
+  -m 4096 \
+  -cpu host \
+  -smp 4 \
+  -machine type=q35 \
+  -bios "$UEFI_FILE" \
+  -drive file="$DISK_FILE",if=virtio \
+  -boot menu=on \
+  -device intel-hda -device hda-duplex \
+  -vga qxl \
+  -display spice-app \
+  -spice port=5930,disable-ticketing=on,agent-mouse=on \
+  -device virtio-serial-pci \
+  -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 \
+  -chardev spicevmc,id=spicechannel0,name=vdagent
+
+# ---------------Máquina virtual sin Spice (no portapapeles compartido), pero con VirtIO 3D más disfrutable-------------------------------
+#https://sl.bing.net/fh4vBKmcDaC
+# Alternativa de display si el sdl no va bien: -display gkt,gl=on \
+# Si tampoco va bien, poner el QXL:
+
+# -drive file=laiso.iso,media=cdrom \
+# en el boot order, c significa que arrancará en el disco duro virtual, d en el CD-ROM
+# y si ponemos boot once=d,menu=on, arrancará una primera vez en el CD-ROM, y después, saldrá siempre un menú de arranque para que podamos elegir donde queremos arrancar.
+
+# qemu-system-x86_64 \
+#   -enable-kvm \
+#   -m 4096 \
+#   -cpu host \
+#   -smp 4 \
+#   -machine type=q35 \
+#   -bios "$UEFI_FILE" \
+#   -drive file="$DISK_FILE",if=virtio \
+#   -drive file="$ISO_VIRTIO",media=cdrom \
+#   -boot order=c \
+#   -net nic,model=virtio -net user \
+#   -device intel-hda -device hda-duplex \
+#   -vga virtio \
+#   -display sdl,gl=on \
+#   -virtfs local,path="$SHARED_FOLDER",mount_tag=host0,security_model=passthrough,id=host0 \
+
+# -spice disable-ticketing=on,gl=on \
+# -device virtio-serial-pci \
+# -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 \
+# -chardev spicevmc,id=spicechannel0,name=vdagent \
