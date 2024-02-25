@@ -5,10 +5,12 @@ $UEFI_FILE = "C:\Program Files\qemu\share\OVMF_CODE-pure-efi.fd"
 # Path to disk file
 # $DISK_FILE = "debian.qcow2"
 $DISK_FILE = "linuxmint-cinnamon.qcow2"
+$DISK_FILE = "locos23-lxde.qcow2"
 
 # Paths to ISO CD-ROM files
 # $ISO_SO = "D:\Sistemas operativos\deepin-desktop-community-20.9-amd64.iso"
-$ISO_SO = "D:\Sistemas operativos\linuxmint-21.3-cinnamon-64bit.iso"
+# $ISO_SO = "D:\Sistemas operativos\linuxmint-21.3-cinnamon-64bit.iso"
+$ISO_SO = "D:\Sistemas operativos\Loc-OS-23-LXDE-x86_64.iso"
 # $ISO_SO = "D:\Sistemas operativos\debian-live-12.1.0-amd64-kde.iso"
 # $ISO_SO = "D:\Sistemas operativos\debian-12.4.0-amd64-netinst.iso"
 $ISO_VIRTIO = "D:\Descargas\Descargas desde Linux\KVM Qemu\Drivers VirtIO\virtio-win-0.1.240.iso"
@@ -41,30 +43,30 @@ if (!(Test-Path $DISK_FILE)) {
 # However -device virtio-gpu-pci doesn't have this problem, but mouse is grabbed despite having usb-tablet device added, and moves are rough.
 
 #---------------------Spice with VirtIO 2D acceleration (is not enjoyable, doesn't have 3D acceleration, it's similar to QXL, or even worse)----------------------
-Start-Job -ScriptBlock { param($REMOTE_URL_SPICE) 
-  Start-Sleep -Miliseconds 500
-  remote-viewer $REMOTE_URL_SPICE
-} -ArgumentList $REMOTE_URL_SPICE
-& qemu-system-x86_64 `
-  -enable-kvm `
-  -m 4096 `
-  -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-no-nonarch-coresharing=auto `
-  -smp 4,sockets=1,cores=4,threads=1 `
-  -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
-  -drive file="$DISK_FILE",if=virtio `
-  -drive file="$ISO_SO",media=cdrom `
-  -drive file="$ISO_VIRTIO",media=cdrom `
-  -boot order=cd,menu=on `
-  -net nic,model=virtio -net user `
-  -device intel-hda -device hda-duplex `
-  -monitor stdio `
-  -device qemu-xhci `
-  -device usb-tablet `
-  -device virtio-vga `
-  -spice port=${PORT_SPICE},disable-ticketing=on,agent-mouse=on `
-  -device virtio-serial-pci `
-  -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 `
-  -chardev spicevmc,id=spicechannel0,name=vdagent `
+# Start-Job -ScriptBlock { param($REMOTE_URL_SPICE) 
+#   Start-Sleep -Miliseconds 500
+#   remote-viewer $REMOTE_URL_SPICE
+# } -ArgumentList $REMOTE_URL_SPICE
+# & qemu-system-x86_64 `
+#   -enable-kvm `
+#   -m 4096 `
+#   -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-no-nonarch-coresharing=auto `
+#   -smp 4,sockets=1,cores=4,threads=1 `
+#   -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
+#   -drive file="$DISK_FILE",if=virtio `
+#   -drive file="$ISO_SO",media=cdrom `
+#   -drive file="$ISO_VIRTIO",media=cdrom `
+#   -boot order=cd,menu=on `
+#   -net nic,model=virtio -net user `
+#   -device intel-hda -device hda-duplex `
+#   -monitor stdio `
+#   -device qemu-xhci `
+#   -device usb-tablet `
+#   -device virtio-vga `
+#   -spice port=${PORT_SPICE},disable-ticketing=on,agent-mouse=on `
+#   -device virtio-serial-pci `
+#   -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 `
+#   -chardev spicevmc,id=spicechannel0,name=vdagent `
 
 # Receive-Job -Job $q -> this line is old. Ignore it. It's only stopping the job stored in a variable called $q, but it's not necessary.
 
@@ -119,7 +121,7 @@ Start-Job -ScriptBlock { param($REMOTE_URL_SPICE)
 #   -net nic,model=virtio -net user `
 #   -device intel-hda -device hda-duplex `
 #   -monitor stdio `
-#   -qemu-xhci `
+#   -device qemu-xhci `
 #   -device usb-tablet `
 #   -vga virtio `
 #   -display none `
@@ -144,7 +146,7 @@ Start-Job -ScriptBlock { param($REMOTE_URL_SPICE)
 #   -net nic,model=virtio -net user `
 #   -device intel-hda -device hda-duplex `
 #   -monitor stdio `
-#   -qemu-xhci `
+#   -device qemu-xhci `
 #   -device usb-tablet `
 #   -vga qxl `
 #   -display none `
@@ -170,7 +172,7 @@ Start-Job -ScriptBlock { param($REMOTE_URL_SPICE)
 #   -net nic,model=virtio -net user `
 #   -device intel-hda -device hda-duplex `
 #   -monitor stdio `
-#   -qemu-xhci `
+#   -usb `
 #   -device usb-tablet `
 #   -device virtio-vga-gl `
 #   -display sdl,gl=on
@@ -210,7 +212,7 @@ Start-Job -ScriptBlock { param($REMOTE_URL_SPICE)
 #   -net nic,model=virtio -net user `
 #   -device intel-hda -device hda-duplex `
 #   -monitor stdio `
-#   -qemu-xhci `
+#   -device qemu-xhci `
 #   -device usb-tablet `
 #   -device qxl-vga `
 #   -display sdl `
