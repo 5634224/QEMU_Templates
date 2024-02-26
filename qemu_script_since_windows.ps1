@@ -4,15 +4,16 @@ $UEFI_FILE = "C:\Program Files\qemu\share\OVMF_CODE-pure-efi.fd"
 
 # Path to disk file
 # $DISK_FILE = "debian.qcow2"
-$DISK_FILE = "linuxmint-cinnamon.qcow2"
-$DISK_FILE = "locos23-lxde.qcow2"
+$DISK_FILE = "debian-odoo.qcow2"
+# $DISK_FILE = "linuxmint-cinnamon.qcow2"
+# $DISK_FILE = "locos23-lxde.qcow2"
 
 # Paths to ISO CD-ROM files
 # $ISO_SO = "D:\Sistemas operativos\deepin-desktop-community-20.9-amd64.iso"
 # $ISO_SO = "D:\Sistemas operativos\linuxmint-21.3-cinnamon-64bit.iso"
-$ISO_SO = "D:\Sistemas operativos\Loc-OS-23-LXDE-x86_64.iso"
+# $ISO_SO = "D:\Sistemas operativos\Loc-OS-23-LXDE-x86_64.iso"
 # $ISO_SO = "D:\Sistemas operativos\debian-live-12.1.0-amd64-kde.iso"
-# $ISO_SO = "D:\Sistemas operativos\debian-12.4.0-amd64-netinst.iso"
+$ISO_SO = "D:\Sistemas operativos\debian-12.4.0-amd64-netinst.iso"
 $ISO_VIRTIO = "D:\Descargas\Descargas desde Linux\KVM Qemu\Drivers VirtIO\virtio-win-0.1.240.iso"
 
 # Paths to shared folders
@@ -53,6 +54,7 @@ if (!(Test-Path $DISK_FILE)) {
 #   -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-no-nonarch-coresharing=auto `
 #   -smp 4,sockets=1,cores=4,threads=1 `
 #   -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
+#   -rtc base=localtime `
 #   -drive file="$DISK_FILE",if=virtio `
 #   -drive file="$ISO_SO",media=cdrom `
 #   -drive file="$ISO_VIRTIO",media=cdrom `
@@ -83,6 +85,7 @@ if (!(Test-Path $DISK_FILE)) {
 #   -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-evmcs,hv-no-nonarch-coresharing=auto `
 #   -smp 4,sockets=1,cores=4,threads=1 `
 #   -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
+#   -rtc base=localtime `
 #   -drive file=$DISK_FILE,if=virtio `
 #   -drive file="$ISO_SO",media=cdrom `
 #   -drive file="$ISO_VIRTIO",media=cdrom `
@@ -114,6 +117,7 @@ if (!(Test-Path $DISK_FILE)) {
 #   -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-evmcs,hv-no-nonarch-coresharing=auto `
 #   -smp 4,sockets=1,cores=4,threads=1 `
 #   -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
+#   -rtc base=localtime `
 #   -drive file=$DISK_FILE,if=virtio `
 #   -drive file="$ISO_SO",media=cdrom `
 #   -drive file="$ISO_VIRTIO",media=cdrom `
@@ -139,6 +143,7 @@ if (!(Test-Path $DISK_FILE)) {
 #   -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-evmcs,hv-no-nonarch-coresharing=auto `
 #   -smp 4,sockets=1,cores=4,threads=1 `
 #   -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
+#   -rtc base=localtime `
 #   -drive file=$DISK_FILE,if=virtio `
 #   -drive file="$ISO_SO",media=cdrom `
 #   -drive file="$ISO_VIRTIO",media=cdrom `
@@ -165,6 +170,7 @@ if (!(Test-Path $DISK_FILE)) {
 #   -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-evmcs,hv-no-nonarch-coresharing=auto `
 #   -smp 4,sockets=1,cores=4,threads=1 `
 #   -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
+#   -rtc base=localtime `
 #   -drive file="$DISK_FILE",if=virtio `
 #   -drive file="$ISO_SO",media=cdrom `
 #   -drive file="$ISO_VIRTIO",media=cdrom `
@@ -172,11 +178,11 @@ if (!(Test-Path $DISK_FILE)) {
 #   -net nic,model=virtio -net user `
 #   -device intel-hda -device hda-duplex `
 #   -monitor stdio `
-#   -usb `
+#   -device qemu-xhci `
 #   -device usb-tablet `
 #   -device virtio-vga-gl `
 #   -display sdl,gl=on
-# # -display gtk,gl=on
+#   # -display gtk,gl=on
 
 # ---------------GTK/SDL Display (no host & guest integrations, but VirtIO Graphics, although without 3D Acceleration)-------------------------------
 # qemu-system-x86_64 `
@@ -185,6 +191,7 @@ if (!(Test-Path $DISK_FILE)) {
 #   -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-evmcs,hv-no-nonarch-coresharing=auto `
 #   -smp 4,sockets=1,cores=4,threads=1 `
 #   -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
+#   -rtc base=localtime `
 #   -drive file="$DISK_FILE",if=virtio `
 #   -drive file="$ISO_SO",media=cdrom `
 #   -drive file="$ISO_VIRTIO",media=cdrom `
@@ -198,13 +205,14 @@ if (!(Test-Path $DISK_FILE)) {
 #   -display sdl
 # # -display gtk
 
-# ---------------Máquina virtual sin Spice (no portapapeles compartido), con QXL :(-------------------------------
+# ---------------GTK/SDL Display (no host & guest integrations, using QXL instead of VirtIO Graphics, only 2D) -------------------------------
 # & qemu-system-x86_64 `
 #   -enable-kvm `
 #   -m 4096 `
 #   -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-evmcs,hv-no-nonarch-coresharing=auto `
 #   -smp 4,sockets=1,cores=4,threads=1 `
 #   -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
+#   -rtc base=localtime `
 #   -drive file="$DISK_FILE",if=virtio `
 #   -drive file="$ISO_SO",media=cdrom `
 #   -drive file="$ISO_VIRTIO",media=cdrom `
@@ -217,6 +225,23 @@ if (!(Test-Path $DISK_FILE)) {
 #   -device qxl-vga `
 #   -display sdl `
 
+# ---------------GTK/SDL Display (no host & guest integrations, using QXL graphics, minimal, useful for no-GUI OS, like Linux Servers) -------------------------------
+& qemu-system-x86_64 `
+  -enable-kvm `
+  -m 1024 `
+  -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-evmcs,hv-no-nonarch-coresharing=auto `
+  -smp 4,sockets=1,cores=4,threads=1 `
+  -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
+  -rtc base=localtime `
+  -drive file="$DISK_FILE",if=virtio `
+  -drive file="$ISO_SO",media=cdrom `
+  -drive file="$ISO_VIRTIO",media=cdrom `
+  -boot order=cd,menu=on `
+  -net nic,model=virtio -net user,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:80,hostfwd=tcp::8069-:8069 `
+  -monitor stdio `
+  -device qxl-vga `
+  -display none `
+#-display gtk,show-cursor=on,zoom-to-fit=on ` -> for installation of OS and SSH Server. After that, you can put -display none
 
 #======================================== FEATURES THAT CAN BE ADDED TO THE VIRTUAL MACHINE ========================================
 # Accelerators:
@@ -239,6 +264,25 @@ if (!(Test-Path $DISK_FILE)) {
 # If we select nothing and the countdown ends, the sequence order of the order argument will follow.
 # c = hard disk. d = CD-ROM
 
+# Compression of the disk image:
+#qemu-img.exe convert -O qcow2 $DISK_FILE zipped.qcow2 -c
+
+# Reduce the size of the disk image:
+# 1st: qemu-img resize imagen.qcow2 20
+# 2nd: Start VM and reduce the size of the partition with GParted or fdisk. Then, synchronize the changes in the file system table.
+# 3rd: qemu-img convert -o preallocation=metadata <nombre_imagen.qcow2> <imagen_redimensionada.qcow2>
+
+# Snapshots (2 ways):
+# 1st:
+# qemu-img snapshot -c "my-snapshot" my-file.qcow2
+# Additional options: -a "my-snapshot" -> To merge the snapshot with original image. -l -> To list the snapshots. -d "my-snapshot" -> To delete the snapshot.
+# 2nd:
+# Run the VM with de -monitor stdio option and type the following commands:
+# monitor
+# savevm my-snapshot
+# Additional commands: loadvm my-snapshot -> To load the snapshot. info snapshots -> To list the snapshots delvm my-snapshot -> To delete the snapshot.
+
+
 #======================================== EXPERIMENTAL FEATURES ========================================
 # UEFI firmware: add the -bios argument to the command line, like this:
 # -bios $UEFI_FILE \
@@ -251,6 +295,16 @@ if (!(Test-Path $DISK_FILE)) {
 #---------------------------------------- Shared Folders, 2nd method ----------------------------------------
 #  -virtfs local,path="$SHARED_FOLDER",mount_tag=host0,security_model=passthrough,id=host0 \
 
+# ---------------------------------------- Bridged host-only network ----------------------------------------
+# It doesn't work in Windows hosts with precompiled binaries. It's only for Linux hosts.
+# See the file Linux_guest_post_installation_recommendations.txt
+
+# -netdev bridge,id=n1 -device virtio-net-pci,netdev=n1 `
+# Other tests:
+# -netdev tap,id=nd0,ifname=tap0 -device e1000,netdev=nd0 `
+# -netdev user,id=mynet0,net=192.168.76.0/24,dhcpstart=192.168.76.9 -device virtio-net,netdev=mynet0 `
+
+# While I'm researching bridged connections, if you want to connect via SSH or port 80, you can use: -net user,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:80
 
 #======================================== CREDITS ========================================
 # https://sl.bing.net/fh4vBKmcDaC -> Copilot, the AI that helped me to write this script.
@@ -259,3 +313,4 @@ if (!(Test-Path $DISK_FILE)) {
 #https://askubuntu.com/questions/1238523/enabling-opengl-in-windows-10-guest-vm-in-qemu
 #https://github.com/pal1000/mesa-dist-win?tab=readme-ov-file#downloads
 #https://github.com/pal1000/mesa-dist-win/releases/tag/22.3.5
+#https://www.youtube.com/watch?v=DYpaX4BnNlg -> for Bridged host-only network

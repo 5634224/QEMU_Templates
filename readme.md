@@ -18,8 +18,8 @@ The QEMU templates provided in this repository are capable of working with both 
 
 # TODO: Investigate certains areas (in order by priority for now)
 
-- Create other templates for making, restoring and removing **snapshots**, while running (or not) the VM.
-- **Bridged network connection** without Internet access, **only between host & guest**. This would be great for SSH connections, for example. Internet'd be going on NAT.
+- Create other templates for making, restoring and removing **snapshots**, while running (or not) the VM -> it's being tested now.
+- **Bridged network connection** without Internet access, **only between host & guest**. This would be great for SSH connections, for example. Internet'd be going on NAT. NEW: For now, I've managed to do a simple port forwarding to get SSH and/or other services.
 - **Shared folders** from host to guest since qemu command. While I'm investigating this, you can follow the post-installation instructions, where you'll find how to configure SAMBA.
 - Drag and drop files feature using Spice only works from host to guest, **but doesn't from guest to host**.
 - **Bridged network connection with Internet**, dispensing with NAT.

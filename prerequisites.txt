@@ -1,0 +1,7 @@
+1. Install QEMU for Windows: https://qemu.weilnetz.de/w64/ | QEMU for Linux Debian based: sudo apt install qemu-full qemu-kvm
+2. (Windows only) Add the QEMU installation path to the system PATH environment variable. For example, in my case it is C:\Program Files\qemu\.
+3. (Windows only) Turn on Windows features (Win + R, and put OptionalFeatures.exe). Specifically: Hyper-V and Virtual Machine Platform.
+4. (Windows only) Enable PowerShell script execution. Open a PowerShell window as administrator and type this:
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+5. (Windows only) Restart the computer (or instead, restart the explorer.exe process).
+6. You can now run the script.

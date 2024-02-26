@@ -6,6 +6,23 @@ sudo apt install spice-vdagent spice-webdavd
 sudo systemctl start spice-vdagent.service
 sudo systemctl enable spice-vdagent.service
 
+# Host-only networking (NOT TESTED YET, thanks to https://bbs.archlinux.org/viewtopic.php?id=182320)
+brctl addbr br0
+ip addr add 192.168.179.1/24 broadcast 192.168.179.255 dev br0
+ip link set br0 up
+
+ip tuntap add dev tap0 mode tap
+ip link set tap0 up promisc on
+
+brctl addif br0 tap0
+
+dnsmasq --interface=br0 --bind-interfaces --dhcp-range=192.168.179.10,192.168.179.254
+
+Then, you can execute qemu-system-x86_64 like following:
+qemu-system-x86_64 -enable-kvm -m 1024 -netdev tap,id=t0,ifname=tap0,script=no,downscript=no -device e1000,netdev=t0,id=nic0 <imagefile>
+
+-------------------While I'm researching bridged host-only connections, if you want to connect via SSH or port 80, you can use: -net user,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:80
+
 # TODO: Shared folders between host & guest
 For now, until I figure out the safe way to share folders between host and guest, 
 I recommend installing a SAMBA server in the Linux host (if it's Windows, it isn't necessary), 

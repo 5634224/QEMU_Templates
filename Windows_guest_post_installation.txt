@@ -1,3 +1,35 @@
 I recommend you to install Windows in a VM with VirtIO VGA QEMU device, and then install VirtIO drivers into Windows guest from here:
 https://www.linux-kvm.org/page/WindowsGuestDrivers
 Then, you can change to QXL, if you want.
+
+# Host-only networking (NOT TESTED YET, thanks to https://bbs.archlinux.org/viewtopic.php?id=182320 and https://sl.bing.net/bq92YpLNWsS) (Require Hyper-V be enabled)
+--Install DHCP Server Windows Role
+Install-WindowsFeature -Name 'DHCP' -IncludeManagementTools
+Set-Service -Name 'DHCP' -StartupType Automatic
+Start-Service -Name 'DHCP'
+
+--Create virtual switch
+New-VMSwitch -Name "br0" -SwitchType Internal
+
+--Configure virtual switch IP
+New-NetIPAddress -IPAddress 192.168.179.1 -PrefixLength 24 -InterfaceAlias "vEthernet (br0)"
+
+--Create virtual network card and connect to switch
+Add-VMNetworkAdapter -SwitchName "br0" -Name "tap0" -ManagementOS
+
+--Enable Promiscuous Mode (on this way, there's no need to assign an ip to the TAP device)
+Set-VMNetworkAdapter -ManagementOS -Name "tap0" -AllowTeaming On
+
+--Configurar un servidor DHCP: Esto requiere que el rol de servidor DHCP esté instalado en tu máquina
+Add-DhcpServerv4Scope -Name "br0" -StartRange 192.168.179.10 -EndRange 192.168.179.254 -SubnetMask 255.255.255.0
+
+qemu-system-x86_64 -m 1024 -device e1000,netdev=network0,id=nic0 -netdev tap,id=network0,ifname=tap0,script=no,downscript=no <imagefile>
+
+Other things that I haven't tested are:
+-netdev bridge,id=n1 -device virtio-net-pci,netdev=n1 `
+# Other tests:
+-netdev tap,id=nd0,ifname=tap0 -device e1000,netdev=nd0 `
+-netdev user,id=mynet0,net=192.168.76.0/24,dhcpstart=192.168.76.9 -device virtio-net,netdev=mynet0 `
+
+
+-------------------While I'm researching bridged host-only connections, if you want to connect via SSH or port 80, you can use: -net user,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:80

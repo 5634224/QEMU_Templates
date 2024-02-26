@@ -251,6 +251,24 @@ fi
 # If we select nothing and the countdown ends, the sequence order of the order argument will follow.
 # c = hard disk. d = CD-ROM
 
+# Compression of the disk image:
+#qemu-img convert -O qcow2 $DISK_FILE zipped.qcow2 -c
+
+# Reduce the size of the disk image:
+# 1st: qemu-img resize imagen.qcow2 20
+# 2nd: Start VM and reduce the size of the partition with GParted or fdisk. Then, synchronize the changes in the file system table.
+# 3rd: qemu-img convert -o preallocation=metadata <nombre_imagen.qcow2> <imagen_redimensionada.qcow2>
+
+# Snapshots (2 ways):
+# 1st:
+# qemu-img snapshot -c "my-snapshot" my-file.qcow2
+# Additional options: -a "my-snapshot" -> To merge the snapshot with original image. -l -> To list the snapshots. -d "my-snapshot" -> To delete the snapshot.
+# 2nd:
+# Run the VM with de -monitor stdio option and type the following commands:
+# monitor
+# savevm my-snapshot
+# Additional commands: loadvm my-snapshot -> To load the snapshot. info snapshots -> To list the snapshots delvm my-snapshot -> To delete the snapshot.
+
 #======================================== EXPERIMENTAL FEATURES ========================================
 #---------------------------------------- Shared Folders, 1st method ----------------------------------------
 #  -fsdev local,id=fsdev0,path="$SHARED_FOLDER",security_model=mapped \
@@ -259,6 +277,10 @@ fi
 #---------------------------------------- Shared Folders, 2nd method ----------------------------------------
 #  -virtfs local,path="$SHARED_FOLDER",mount_tag=host0,security_model=passthrough,id=host0 \
 
+# ---------------------------------------- Bridged host-only network ----------------------------------------
+# See the file Linux_guest_post_installation_recommendations.txt
+
 #======================================== CREDITS ========================================
 # https://sl.bing.net/fh4vBKmcDaC -> Copilot, the AI that helped me to write this script.
 # https://www.qemu.org/docs/master/system/invocation.html -> general QEMU documentation and options of the command line
+# https://bbs.archlinux.org/viewtopic.php?id=182320 -> qemu and host-only networking
