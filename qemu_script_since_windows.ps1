@@ -278,7 +278,7 @@ if (!(Test-Path $DISK_FILE)) {
 # Snapshots (2 ways):
 # 1st:
 # qemu-img snapshot -c "my-snapshot" my-file.qcow2
-# Additional options: -a "my-snapshot" -> To merge the snapshot with original image. -l -> To list the snapshots. -d "my-snapshot" -> To delete the snapshot.
+# Additional options: -a "my-snapshot" -> To return the image to the snapshot. -l -> To list the snapshots. -d "my-snapshot" -> To delete the snapshot.
 # 2nd:
 # Run the VM with de -monitor stdio option and type the following commands:
 # monitor
