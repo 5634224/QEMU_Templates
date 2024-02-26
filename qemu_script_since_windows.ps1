@@ -264,6 +264,9 @@ if (!(Test-Path $DISK_FILE)) {
 # If we select nothing and the countdown ends, the sequence order of the order argument will follow.
 # c = hard disk. d = CD-ROM
 
+# Get info about the hard disk:
+# qemu-img info $DISK_FILE
+
 # Compression of the disk image:
 #qemu-img.exe convert -O qcow2 $DISK_FILE zipped.qcow2 -c
 
