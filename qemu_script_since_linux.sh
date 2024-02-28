@@ -262,13 +262,13 @@ fi
 # 2nd: Start VM and reduce the size of the partition with GParted or fdisk. Then, synchronize the changes in the file system table.
 # 3rd: qemu-img convert -o preallocation=metadata <nombre_imagen.qcow2> <imagen_redimensionada.qcow2>
 
-# Snapshots (2 ways):
+# Snapshots (2 ways): https://superuser.com/questions/1768173/how-to-work-with-qemu-snapshots-savevm-in-a-way-that-is-predictable-like-virtual
 # 1st:
 # qemu-img snapshot -c "my-snapshot" my-file.qcow2 -> to create a snapshot.
 # qemu-img snapshot -a "my-snapshot" my-file.qcow2 -> to return the image to the snapshot.
 # qemu-img snapshot -l my-file.qcow2 -> to list the snapshots.
 # qemu-img snapshot -d "my-snapshot" my-file.qcow2 -> to delete the snapshot.
-# qemu-img snapshot -r "my-snapshot" "my-snapshot-renamed" my-file.qcow2 -> to rename the snapshot.
+# qemu-img snapshot -r "my-snapshot" "my-snapshot-renamed" my-file.qcow2 -> to rename the snapshot. This option doesn't exist yet.
 # 2nd:
 # Run the VM with de -monitor stdio option and type the following commands:
 # monitor
