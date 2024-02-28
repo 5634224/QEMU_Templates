@@ -264,8 +264,11 @@ fi
 
 # Snapshots (2 ways):
 # 1st:
-# qemu-img snapshot -c "my-snapshot" my-file.qcow2
-# Additional options: -a "my-snapshot" -> To return the image to the snapshot. -l -> To list the snapshots. -d "my-snapshot" -> To delete the snapshot.
+# qemu-img snapshot -c "my-snapshot" my-file.qcow2 -> to create a snapshot.
+# qemu-img snapshot -a "my-snapshot" my-file.qcow2 -> to return the image to the snapshot.
+# qemu-img snapshot -l my-file.qcow2 -> to list the snapshots.
+# qemu-img snapshot -d "my-snapshot" my-file.qcow2 -> to delete the snapshot.
+# qemu-img snapshot -r "my-snapshot" "my-snapshot-renamed" my-file.qcow2 -> to rename the snapshot.
 # 2nd:
 # Run the VM with de -monitor stdio option and type the following commands:
 # monitor
