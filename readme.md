@@ -16,9 +16,13 @@ In Windows Guests, you must see this for VirtIO drivers in Windows guests: https
 
 The QEMU templates provided in this repository are capable of working with both **BIOS and UEFI firmware**. This flexibility allows users to create virtual machines that are compatible with a wide range of operating systems and hardware configurations. However, it's worth noting that currently, UEFI functionality has only been successfully tested on QEMU installations on Linux hosts. Despite this, the ability to work with both BIOS and UEFI firmware enhances the versatility and compatibility of the virtual machines created using these templates.
 
+# Snapshots
+
+Would you like not to lose or break your VM data? Done. With QEMU Snapshot, you can save the VM state, while running or when it's stopped. If you create a snapshot with the VM turned off, it won't take up space!
+When you need it, you can create, restore or delete snapshots, but you can't rename them. Be careful to always choose a representative name!
+
 # TODO: Investigate certains areas (in order by priority for now)
 
-- Create other templates for making, restoring and removing **snapshots**, while running (or not) the VM -> it's being tested now.
 - **Bridged network connection** without Internet access, **only between host & guest**. This would be great for SSH connections, for example. Internet'd be going on NAT. NEW: For now, I've managed to do a simple port forwarding to get SSH and/or other services.
 - **Shared folders** from host to guest since qemu command. While I'm investigating this, you can follow the post-installation instructions, where you'll find how to configure SAMBA.
 - Drag and drop files feature using Spice only works from host to guest, **but doesn't from guest to host**.

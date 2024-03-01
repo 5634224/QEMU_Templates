@@ -312,6 +312,13 @@ if (!(Test-Path $DISK_FILE)) {
 
 # While I'm researching bridged connections, if you want to connect via SSH or port 80, you can use: -net user,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:80
 
+# ---------------------------------------- USB Passthrough ----------------------------------------
+# Before start VM
+# -device usb-host,vendorid=0x0781,productid=0x5567 \ -> to pass through a USB device. You can get the vendorid and productid with the command lsusb in Linux host, or with Device Manager in Windows host.
+
+# With the QEMU Monitor (after VM launching), you can add or remove USB devices while the VM is running. For example:
+# usb_add host:vendorid=0x0781,productid=0x5567 -> replace vendorid and productid with the real values of the USB device.
+
 #======================================== CREDITS ========================================
 # https://sl.bing.net/fh4vBKmcDaC -> Copilot, the AI that helped me to write this script.
 # https://www.qemu.org/docs/master/system/invocation.html -> general QEMU documentation and options of the command line
