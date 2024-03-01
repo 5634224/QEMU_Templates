@@ -1,7 +1,8 @@
 1. Install QEMU for Windows: https://qemu.weilnetz.de/w64/ | QEMU for Linux Debian based: sudo apt install qemu-full qemu-kvm
 2. (Windows only) Add the QEMU installation path to the system PATH environment variable. For example, in my case it is C:\Program Files\qemu\.
-3. (Windows only) Turn on Windows features (Win + R, and put OptionalFeatures.exe). Specifically: Hyper-V and Virtual Machine Platform.
+3. (Windows only) Turn on Windows features (Win + R, and put OptionalFeatures.exe). Specifically: Hyper-V and Virtual Machine Platform. If you are in Windows Home Edition, see this: https://www.jasoft.org/Blog/post/como-instalar-hyper-v-en-windows-10-home-edition
 4. (Windows only) Enable PowerShell script execution. Open a PowerShell window as administrator and type this:
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
-5. (Windows only) Restart the computer (or instead, restart the explorer.exe process).
-6. You can now run the script.
+5. If you uses Spice/GTK/SDL, you need to install the required virt-viewer (https://virt-manager.org/download) and add to your PATH variable (the last only if you are on Windows host). In my case, it's installed in C:\Program Files\VirtViewer v11.0-256\bin. 
+6. (Windows only) Restart the computer (or instead, restart the explorer.exe process).
+7. You can now run the script.
