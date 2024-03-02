@@ -1,10 +1,12 @@
 # Path to UEFI/BIOS firmware
 #$UEFI_FILE = "C:\Program Files\qemu\share\edk2-x86_64-code.fd"
-$UEFI_FILE = "C:\Program Files\qemu\share\OVMF_CODE-pure-efi.fd"
+$UEFI_FILE = "C:\Program Files\qemu\share\OVMF_CODE-with-csm.fd"
+# $UEFI_FILE = "C:\Program Files\qemu\share\edk2-x86_64-code.fd"
 
 # Path to disk file
+$DISK_FILE = "win10.qcow2"
 # $DISK_FILE = "debian.qcow2"
-$DISK_FILE = "debian-odoo.qcow2"
+# $DISK_FILE = "debian-odoo.qcow2"
 # $DISK_FILE = "linuxmint-cinnamon.qcow2"
 # $DISK_FILE = "locos23-lxde.qcow2"
 
@@ -13,6 +15,7 @@ $DISK_FILE = "debian-odoo.qcow2"
 # $ISO_SO = "D:\Sistemas operativos\linuxmint-21.3-cinnamon-64bit.iso"
 # $ISO_SO = "D:\Sistemas operativos\Loc-OS-23-LXDE-x86_64.iso"
 # $ISO_SO = "D:\Sistemas operativos\debian-live-12.1.0-amd64-kde.iso"
+# $ISO_SO = "T:\Sistemas operativos\MiniOS10 LTSC-21H2 v2023.04 x64.iso"
 $ISO_SO = "D:\Sistemas operativos\debian-12.4.0-amd64-netinst.iso"
 $ISO_VIRTIO = "D:\Descargas\Descargas desde Linux\KVM Qemu\Drivers VirtIO\virtio-win-0.1.240.iso"
 
@@ -223,25 +226,25 @@ if (!(Test-Path $DISK_FILE)) {
 #   -device qemu-xhci `
 #   -device usb-tablet `
 #   -device qxl-vga `
-#   -display sdl `
+#   -display gtk `
 
 # ---------------GTK/SDL Display (no host & guest integrations, using QXL graphics, minimal, useful for no-GUI OS, like Linux Servers) -------------------------------
-& qemu-system-x86_64 `
-  -enable-kvm `
-  -m 1024 `
-  -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-evmcs,hv-no-nonarch-coresharing=auto `
-  -smp 4,sockets=1,cores=4,threads=1 `
-  -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
-  -rtc base=localtime `
-  -drive file="$DISK_FILE",if=virtio `
-  -drive file="$ISO_SO",media=cdrom `
-  -drive file="$ISO_VIRTIO",media=cdrom `
-  -boot order=cd,menu=on `
-  -net nic,model=virtio -net user,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:80,hostfwd=tcp::8069-:8069 `
-  -monitor stdio `
-  -device qxl-vga `
-  -display none `
-#-display gtk,show-cursor=on,zoom-to-fit=on ` -> for installation of OS and SSH Server. After that, you can put -display none
+# & qemu-system-x86_64 `
+#   -enable-kvm `
+#   -m 1024 `
+#   -cpu kvm64,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx2,hv-passthrough,hv-relaxed,hv-time,hv-vapic,hv-evmcs,hv-no-nonarch-coresharing=auto `
+#   -smp 4,sockets=1,cores=4,threads=1 `
+#   -machine type=q35,accel=whpx:tcg,kernel-irqchip=off `
+#   -rtc base=localtime `
+#   -drive file="$DISK_FILE",if=virtio `
+#   -drive file="$ISO_SO",media=cdrom `
+#   -drive file="$ISO_VIRTIO",media=cdrom `
+#   -boot order=cd,menu=on `
+#   -net nic,model=virtio -net user,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:80,hostfwd=tcp::8069-:8069 `
+#   -monitor stdio `
+#   -device qxl-vga `
+#   -display none `
+# #-display gtk,show-cursor=on,zoom-to-fit=on ` -> for installation of OS and SSH Server. After that, you can put -display none
 
 #======================================== FEATURES THAT CAN BE ADDED TO THE VIRTUAL MACHINE ========================================
 # Accelerators:
@@ -318,6 +321,12 @@ if (!(Test-Path $DISK_FILE)) {
 
 # With the QEMU Monitor (after VM launching), you can add or remove USB devices while the VM is running. For example:
 # usb_add host:vendorid=0x0781,productid=0x5567 -> replace vendorid and productid with the real values of the USB device.
+
+#---------------------------------------- Shared clipboard without Spice ----------------------------------------
+# -spice disable-ticketing=on,agent-mouse=on `
+# -device virtio-serial-pci `
+# -device virtserialport,chardev=vdagent,name=com.redhat.spice.0 `
+# -chardev qemu-vdagent,id=vdagent,clipboard=on
 
 #======================================== CREDITS ========================================
 # https://sl.bing.net/fh4vBKmcDaC -> Copilot, the AI that helped me to write this script.

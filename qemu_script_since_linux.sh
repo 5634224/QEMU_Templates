@@ -5,13 +5,13 @@ UEFI_FILE="/usr/share/OVMF/OVMF_CODE.fd"
 
 # Path to disk file
 # DISK_FILE="deepin.qcow2"
-DISK_FILE="debian.qcow2"
+# DISK_FILE="debian.qcow2"
 # DISK_FILE="linuxmint-cinnamon.qcow2"
-# DISK_FILE="win10.qcow2"
+DISK_FILE="win10.qcow2"
 
 # Paths to ISO CD-ROM files
-ISO_SO="/media/santiago/DATOS/Sistemas operativos/deepin-desktop-community-20.9-amd64.iso"
-# ISO_SO="/media/santiago/2_TB/Sistemas operativos/MiniOS10 LTSC-21H2 v2023.04 x64.iso"
+# ISO_SO="/media/santiago/DATOS/Sistemas operativos/deepin-desktop-community-20.9-amd64.iso"
+ISO_SO="/media/santiago/2_TB/Sistemas operativos/MiniOS10 LTSC-21H2 v2023.04 x64.iso"
 ISO_VIRTIO="/media/santiago/DATOS/Descargas/Descargas desde Linux/KVM Qemu/Drivers VirtIO/virtio-win-0.1.240.iso"
 
 # Paths to shared folders
@@ -43,6 +43,7 @@ fi
 #   -cpu host \
 #   -smp 4,sockets=1,cores=4,threads=1 \
 #   -machine type=q35 \
+#   -rtc base=localtime \
 #   -drive file="$DISK_FILE",if=virtio \
 #   -drive file="$ISO_SO",media=cdrom \
 #   -drive file="$ISO_VIRTIO",media=cdrom \
@@ -65,6 +66,7 @@ fi
 #   -cpu host \
 #   -smp 4,sockets=1,cores=4,threads=1 \
 #   -machine type=q35 \
+#   -rtc base=localtime \
 #   -drive file="$DISK_FILE",if=virtio \
 #   -drive file="$ISO_SO",media=cdrom \
 #   -drive file="$ISO_VIRTIO",media=cdrom \
@@ -89,6 +91,7 @@ fi
 #   -cpu host \
 #   -smp 4,sockets=1,cores=4,threads=1 \
 #   -machine type=q35 \
+#   -rtc base=localtime \
 #   -drive file="$DISK_FILE",if=virtio \
 #   -drive file="$ISO_SO",media=cdrom \
 #   -drive file="$ISO_VIRTIO",media=cdrom \
@@ -114,6 +117,7 @@ fi
 #   -cpu host \
 #   -smp 4,sockets=1,cores=4,threads=1 \
 #   -machine type=q35 \
+#   -rtc base=localtime \
 #   -drive file=$DISK_FILE,if=virtio \
 #   -drive file="$ISO_SO",media=cdrom \
 #   -drive file="$ISO_VIRTIO",media=cdrom \
@@ -135,6 +139,7 @@ fi
 #   -cpu host \
 #   -smp 4,sockets=1,cores=4,threads=1 \
 #   -machine type=q35 \
+#   -rtc base=localtime \
 #   -drive file=$DISK_FILE,if=virtio \
 #   -drive file="$ISO_SO",media=cdrom \
 #   -drive file="$ISO_VIRTIO",media=cdrom \
@@ -156,6 +161,7 @@ fi
 #   -cpu host \
 #   -smp 4,sockets=1,cores=4,threads=1 \
 #   -machine type=q35 \
+#   -rtc base=localtime \
 #   -drive file=$DISK_FILE,if=virtio \
 #   -drive file="$ISO_SO",media=cdrom \
 #   -drive file="$ISO_VIRTIO",media=cdrom \
@@ -179,6 +185,7 @@ fi
 #   -cpu host \
 #   -smp 4,sockets=1,cores=4,threads=1 \
 #   -machine type=q35 \
+#   -rtc base=localtime \
 #   -drive file="$DISK_FILE",if=virtio \
 #   -drive file="$ISO_SO",media=cdrom \
 #   -drive file="$ISO_VIRTIO",media=cdrom \
@@ -199,6 +206,7 @@ fi
 #   -cpu host \
 #   -smp 4,sockets=1,cores=4,threads=1 \
 #   -machine type=q35 \
+#   -rtc base=localtime \
 #   -drive file="$DISK_FILE",if=virtio \
 #   -drive file="$ISO_SO",media=cdrom \
 #   -drive file="$ISO_VIRTIO",media=cdrom \
@@ -219,6 +227,7 @@ fi
 #   -cpu host \
 #   -smp 4,sockets=1,cores=4,threads=1 \
 #   -machine type=q35 \
+#   -rtc base=localtime \
 #   -drive file="$DISK_FILE",if=virtio \
 #   -drive file="$ISO_VIRTIO",media=cdrom \
 #   -boot order=cd,menu=on \
@@ -229,7 +238,31 @@ fi
 #   -device usb-tablet \
 #   -vga qxl \
 #   -display gtk \
+#   -spice disable-ticketing=on,agent-mouse=on \
+#   -device virtio-serial-pci \
+#   -device virtserialport,chardev=vdagent,name=com.redhat.spice.0 \
+#   -chardev qemu-vdagent,id=vdagent,clipboard=on
 # # -display sdl
+
+# ---------------GTK/SDL Display (no host & guest integrations, using QXL graphics, minimal, useful for no-GUI OS, like Linux Servers) -------------------------------
+# qemu-system-x86_64 \
+#   -enable-kvm \
+#   -m 4096 \
+#   -cpu host \
+#   -smp 4,sockets=1,cores=4,threads=1 \
+#   -machine type=q35 \
+#   -rtc base=localtime \
+#   -drive file="$DISK_FILE",if=virtio \
+#   -drive file="$ISO_VIRTIO",media=cdrom \
+#   -boot order=cd,menu=on \
+#   -net nic,model=virtio -net user,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:80,hostfwd=tcp::8069-:8069 ` \
+#   -device intel-hda -device hda-duplex \
+#   -monitor stdio \
+#   -device qemu-xhci \
+#   -device usb-tablet \
+#   -vga qxl \
+#   -display none \
+# # -display gtk \
 
 #======================================== FEATURES THAT CAN BE ADDED TO THE VIRTUAL MACHINE ========================================
 # UEFI firmware: add the -bios argument to the command line, like this:
@@ -293,6 +326,12 @@ fi
 
 # With the QEMU Monitor (after VM launching), you can add or remove USB devices while the VM is running. For example:
 # usb_add host:vendorid=0x0781,productid=0x5567 -> replace vendorid and productid with the real values of the USB device.
+
+#---------------------------------------- Shared clipboard without Spice ----------------------------------------
+# -spice disable-ticketing=on,agent-mouse=on `
+# -device virtio-serial-pci `
+# -device virtserialport,chardev=vdagent,name=com.redhat.spice.0 `
+# -chardev qemu-vdagent,id=vdagent,clipboard=on
 
 #======================================== CREDITS ========================================
 # https://sl.bing.net/fh4vBKmcDaC -> Copilot, the AI that helped me to write this script.
